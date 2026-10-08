@@ -47,3 +47,11 @@ on nix, see: <https://pypi.org/project/pandoc-include/>.
 pandoc --filter pandoc-include --from=markdown main.md --to=...
 ```
 
+## Generate random text
+
+```bash
+curl 'https://jaspervdj.be/lorem-markdownum/markdown.txt?no-code=on&num-blocks=50' \
+    >> content/random.md \
+    && echo "" >> content/random.md
+```
+
