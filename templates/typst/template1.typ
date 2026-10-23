@@ -28,6 +28,8 @@ $else$
 $template.typst()$
 $endif$
 
+#import "templates/typst/components.typ": custom-conf
+
 $if(smart)$
 $else$
 #set smartquote(enabled: false)
@@ -37,7 +39,7 @@ $for(header-includes)$
 $header-includes$
 
 $endfor$
-#show: doc => conf(
+#show: doc => custom-conf(
 $if(title)$
   title: [$title$],
 $endif$
@@ -64,6 +66,9 @@ $if(keywords)$
 $endif$
 $if(date)$
   date: [$date$],
+$endif$
+$if(publisher)$
+  publisher: [$publisher$],
 $endif$
 $if(lang)$
   lang: "$lang$",

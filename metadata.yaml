@@ -12,6 +12,7 @@ papersize: a4
 # mainfont: "DejaVu Sans"
 mainfont: "Lora"
 fontsize: 12pt
+section-numbering: "1.1"
 # see pandoc manual 'Variables for Typst' for all options
 
 author:

@@ -96,13 +96,13 @@ main = shakeArgs shOpts $ do
            <> " --abbreviations=assets/abbrevs.txt"
            <> " --metadata-file=metadata.yaml"
            <> " --template=templates/typst/template1.typ"
-           <> " -V template=templates/typst/template2.typ"
 
     "_build/book.pdf" %> \out -> do
         putInfo "🖋 Building pdf output."
         need
             [ "_build/book.typ"
-            , "_build/templates/typst/template2.typ"
+            , "_build/templates/typst/components.typ"
+            , "_build/templates/typst/component-styles.typ"
             ]
         cmd_ $ "typst compile _build/book.typ " <> out
 
