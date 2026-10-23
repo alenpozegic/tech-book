@@ -111,6 +111,10 @@
     above: component-style.toc.chapter-spacing,
   )
 
+show outline.entry: set text(
+  size: component-style.toc.entries-size,
+) 
+
 show outline.entry: toc-entry
 
   outline(
@@ -149,6 +153,9 @@ show outline.entry: toc-entry
         )[
           #show outline.entry : set text(
             weight: component-style.mini-toc.weight
+          )
+          #show outline.entry: set text(
+            size: component-style.toc.entries-size,
           )
           #show outline.entry: toc-entry
           #outline(

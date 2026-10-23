@@ -11,7 +11,7 @@
 - keywords (ključne besede) segment
 - errata segment (samo za PDF)
 - reviewers <-> chapter tables
-- chapter/subchapter/subsubchapter... symbols
+- chapter/subchapter/subsubchapter... symbols (ALEN)
 - notes, warnings admonitions (opozorilo, opomba)
 - login box
 - procedure box

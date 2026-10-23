@@ -46,6 +46,7 @@
     chapter-spacing: 1em,
     title-color: rgb("#000000"),
     entries-color: rgb("#084b63"),
+    entries-size: 12pt,
     pages-color: rgb("#070707"),
   ),
 
@@ -55,5 +56,6 @@
     bottom-spacing: 1em,
     indent: 0pt,
     weight: "regular",
+    entries-size: 12pt,
   ),
 )
