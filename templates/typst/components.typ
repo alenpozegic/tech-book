@@ -17,6 +17,12 @@
 #let page-footer() = context {
   if page.numbering != none {
 
+    set text(
+      size: component-style.footer.size,
+      weight: component-style.footer.weight,
+      fill: component-style.footer.color,
+    )
+
     let position = if calc.odd(here().page()) { 
       right } else { 
         left }

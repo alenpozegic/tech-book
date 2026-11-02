@@ -58,4 +58,10 @@
     weight: "regular",
     entries-size: 12pt,
   ),
+
+  footer: (
+    size: 10pt,
+    weight: "regular",
+    color: rgb("#070707")
+  ),
 )
