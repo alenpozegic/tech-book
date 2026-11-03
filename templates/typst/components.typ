@@ -254,7 +254,17 @@ set heading(numbering: (..numbers) => {
 
     symbols.at(index)
   }
-  })
+
+})
+
+  set table(
+  stroke: component-style.table.stroke,
+  fill: (_, y) => if y == 0 {
+    component-style.table.header-fill
+  } else {
+    component-style.table.body-fill
+  }
+)
 
   cover-page(title: title, publisher: publisher, date: date)
   main-toc()

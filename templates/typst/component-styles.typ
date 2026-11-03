@@ -17,6 +17,13 @@
     justify: true,
   ),
 
+    //Oblikovanje tabele
+  table: (
+    stroke: 1pt + black,
+    header-fill: gray.lighten(30%),
+    body-fill: gray.lighten(90%),
+  ),
+
     // Oblikovne lastnosti naslovnice
   cover: (
     image: "../../content/img1.png",

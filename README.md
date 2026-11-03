@@ -13,6 +13,9 @@ shake -h                # show all options
 
 ./bin/watch             # monitor file changes, auto rebuild
 
+# shake does not detect argument changes, this pattern is safer
+shake clean && ./bin/watch -c "chap-sub1|chap-sub2"
+
 exit # out of nix-shell
 ```
 
@@ -54,4 +57,29 @@ curl 'https://jaspervdj.be/lorem-markdownum/markdown.txt?no-code=on&num-blocks=5
     >> content/random.md \
     && echo "" >> content/random.md
 ```
+
+## Heading identifiers
+
+All headings are auto-identified. There is an algorithm to turn a title to an
+identifier. See [pandoc auto_identifiers extension](https://pandoc.org/MANUAL.html#extension-auto_identifiers).
+
+It is also possible to explicitely put an identifier, like this:
+
+```
+# Introduction {#intro}
+## Getting started {#getting-started}
+
+Some text, see [Introduction chapter](#intro).
+```
+
+## Compile only selected chapters
+
+Use `--only-chapters=PAT` or `-c PAT`, for example:
+
+```bash
+shake -c sub1 -c "code%-blocks" -c "a.*b"
+```
+
+Please note that `PAT` pattern is a reference-to-chapter (either automatic or
+manual), not the title.
 
