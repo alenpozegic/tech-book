@@ -45,7 +45,7 @@
   // Nastavitve prikaza kazal
   toc: (
     title: [Content:],
-    depth: 3,
+    depth: 2,
     top-spacing: 1cm,
     title-spacing: 1cm,
     indent: 2em,
@@ -58,7 +58,7 @@
   ),
 
   mini-toc: (
-    depth: 3,
+    depth: 2,
     top-spacing: 1em,
     bottom-spacing: 1em,
     indent: 0pt,

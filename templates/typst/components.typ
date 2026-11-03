@@ -109,11 +109,11 @@
 
   v(component-style.toc.top-spacing, weak: false)
 
-  show outline.entry.where(level: 1).or(outline.entry.where(level: 2)): set text(
+  show outline.entry.where(level: 1): set text(
     weight: component-style.toc.chapter-weight,
   )
 
-  show outline.entry.where(level: 2): set block(
+  show outline.entry.where(level: 1): set block(
     above: component-style.toc.chapter-spacing,
   )
 
@@ -125,7 +125,7 @@ show outline.entry: toc-entry
 
   outline(
     title: component-style.toc.title,
-    target: heading.where(level: 2).or(heading.where(level:3)
+    target: heading.where(level: 1).or(heading.where(level:2)
     ),
     depth: component-style.toc.depth,
     indent: component-style.toc.indent,
@@ -133,15 +133,15 @@ show outline.entry: toc-entry
   pagebreak()
 }
 
-// Mini kazalo pri L2 poglavju; izbor se konča pred naslednjim L1 ali L2.
+// Mini kazalo pri L1 poglavju; vsebuje pripadajoče L2 do naslednjega L1.
 #let chapter-toc(chapter) = {
-  if chapter.level == 2 and chapter.outlined {
+  if chapter.level == 1 and chapter.outlined {
     context {
       let following = selector(
         heading.where(outlined: true)
       ).after(chapter.location(), inclusive: false)
 
-      let boundaries = query(following).filter(h => h.level <= 2)
+      let boundaries = query(following).filter(h => h.level <= 1)
       let target = following
 
       if boundaries.len() > 0 {
@@ -151,8 +151,8 @@ show outline.entry: toc-entry
         )
       }
 
-      // Poglavja brez naslovov L3 ne dobijo mini kazala ali dodatnega preloma.
-      if query(target).any(h => h.level == 3) {
+      // Poglavja brez naslovov L2 ne dobijo mini kazala ali dodatnega preloma.
+      if query(target).any(h => h.level == 2) {
         block(
           above: component-style.mini-toc.top-spacing,
           below: component-style.mini-toc.bottom-spacing,
@@ -239,22 +239,18 @@ show outline.entry: toc-entry
     size: fontsize,
   )
 set heading(numbering: (..numbers) => {
-  let parts = numbers.pos().slice(1)
+  let parts = numbers.pos()
 
-  if parts.len() == 0 {
-    // Testni root nima oznake.
-    []
-  } else if parts.len() <= 2 {
-    // Glavna poglavja in podpoglavja: 1, 1.1 …
+  if parts.len() <= 2 {
+    // L1: 1, 2 …; L2: 1.1, 1.2 …
     numbering(sectionnumbering, ..parts)
   } else {
-    // Nižje ravni dobijo simbol namesto številke.
+    // Od L3 naprej uporabimo simbole
     let symbols = component-style.heading.symbols
-    let index = calc.min(parts.len() - 3, symbols.len() - 1)
+    let index = calc.min(parts.len() - 3, symbols.len() -1)
 
     symbols.at(index)
   }
-
 })
 
   set table(
