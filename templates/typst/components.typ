@@ -161,7 +161,7 @@ show outline.entry: toc-entry
             weight: component-style.mini-toc.weight
           )
           #show outline.entry: set text(
-            size: component-style.toc.entries-size,
+            size: component-style.mini-toc.entries-size,
           )
           #show outline.entry: toc-entry
           #outline(
