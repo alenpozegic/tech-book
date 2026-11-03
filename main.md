@@ -1,4 +1,4 @@
-# root
+# Introduction
 
 This is a *content*.
 
@@ -12,15 +12,15 @@ By author...
 
 []{.review-by-author}
 
-!include`incrementSection=1` content/showcase.md
+!include content/showcase.md
 
-!include`incrementSection=1` content/chapter1.md
+!include content/chapter1.md
 
-!include`incrementSection=1` content/chapter2.md
+!include content/chapter2.md
 
-!include`incrementSection=1` content/random-wrap.md
+!include content/random-wrap.md
 
-# another root chapter
+# another toplevel chapter
 
 Nothing inside.
 
@@ -31,5 +31,5 @@ See [this ref](#explicit-ref).
 
 ## sub2 {#explicit-ref review="Lojze Novak"}
 
-This is subchapter2, see also [root](#root).
+This is subchapter2, see also [intro](#introduction).
 
