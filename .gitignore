@@ -1,3 +1,4 @@
 # ignored directories
-_build/
+/_build/
+/result
 
