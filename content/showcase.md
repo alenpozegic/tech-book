@@ -66,6 +66,8 @@ Example
 | Lists | Ordered and unordered lists | ✓ |
 | Code | Syntax highlighting | ✓ |
 
+Table: Example of table syntax in Markdown.
+
 Example
 
 | Syntax   | Description         | Test              |
@@ -74,6 +76,8 @@ Example
 | `:--`    | `--:` (right align) | `:-:` (center)    |
 | Left     | Right               | Center            |
 | **Bold** | *Italic*            | ~~Strikethrough~~ |
+
+Table: Example of table syntax.
 
 ## Code Blocks
 

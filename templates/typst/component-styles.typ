@@ -62,6 +62,11 @@
     title: [Kazalo slik],
   ),
 
+  //Kazalo tabel
+  tables-toc: (
+    title: [Kazalo tabel],
+  ),
+
   //Mini kazala
   mini-toc: (
     depth: 2,
