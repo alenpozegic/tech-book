@@ -133,6 +133,31 @@ show outline.entry: toc-entry
   pagebreak()
 }
 
+
+//Kazalo slik
+#let figures-toc() = {
+  show heading: set block(
+    above: 0pt,
+    below: component-style.toc.title-spacing,
+  )
+
+  show outline.entry: set text(
+    fill: component-style.toc.title-color,
+  )
+
+  show outline.entry: toc-entry
+
+  v(component-style.toc.top-spacing, weak: false)
+
+  outline(
+    title: component-style.figures-toc.title,
+    target: figure.where(kind: image),
+    indent: component-style.toc.indent,
+  )
+  pagebreak()
+}
+
+
 // Mini kazalo pri L1 poglavju; vsebuje pripadajoče L2 do naslednjega L1.
 #let chapter-toc(chapter) = {
   if chapter.level == 1 and chapter.outlined {
@@ -264,5 +289,6 @@ set heading(numbering: (..numbers) => {
 
   cover-page(title: title, publisher: publisher, date: date)
   main-toc()
+  figures-toc()
   chapter-content(doc)
 }

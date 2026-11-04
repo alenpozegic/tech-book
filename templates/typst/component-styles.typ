@@ -57,6 +57,12 @@
     pages-color: rgb("#070707"),
   ),
 
+  //Kazalo slik
+  figures-toc: (
+    title: [Kazalo slik],
+  ),
+
+  //Mini kazala
   mini-toc: (
     depth: 2,
     top-spacing: 1em,
