@@ -80,6 +80,10 @@
 
 // Skupni prikaz vnosa kazala.
 #let toc-entry(entry) = {
+  show link: set text(
+    fill: component-style.toc.entries-color
+  )
+
   set text(fill: component-style.toc.entries-color)
 
   let inner = [
@@ -317,6 +321,10 @@ set heading(numbering: (..numbers) => {
     component-style.table.body-fill
   }
 )
+
+  show link: set text(
+    fill: component-style.links.color,
+  )
 
   cover-page(title: title, publisher: publisher, date: date)
   main-toc()

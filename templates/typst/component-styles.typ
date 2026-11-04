@@ -77,6 +77,12 @@
     entries-size: 12pt,
   ),
 
+  //Barve linkov
+
+  links: (
+    color: rgb("#0513da"),
+  ),
+
   footer: (
     size: 10pt,
     weight: "regular",
