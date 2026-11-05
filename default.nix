@@ -1,5 +1,6 @@
 { sources ? import ./nix/sources.nix
 , pkgs ? import sources.nixpkgs {}
+, gitrev ? "devel"
 , inShell ? null
 }:
 
@@ -20,6 +21,7 @@ let
   };
 
   envVars = ''
+    export GITREV="${gitrev}"
     export FONTCONFIG_FILE="${fontsConf}"
   '';
 

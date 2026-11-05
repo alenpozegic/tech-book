@@ -1,7 +1,7 @@
 {-# LANGUAGE LambdaCase #-}
 
 import Control.Monad (when)
-import Data.Maybe (mapMaybe)
+import Data.Maybe (mapMaybe, fromJust)
 import Data.List (intercalate)
 import System.Console.GetOpt
 
@@ -117,7 +117,7 @@ main = shakeArgsWith shOpts flags $ \flags' newTargets -> pure $ Just $ do
                 [] -> ""
                 _ ->
                     " --lua-filter filters/only-chapters.lua"
-                    <> " -M only-chapters=" <> onlyChaptersString
+                    <> " --metadata only-chapters=" <> onlyChaptersString
         when (onlyChaptersList /= []) $ do
             putWarn $ "⥹ Only include chapters: " <> onlyChaptersString
 
@@ -140,6 +140,7 @@ main = shakeArgsWith shOpts flags $ \flags' newTargets -> pure $ Just $ do
 
     "_build/book.typ" %> \out -> do
         putInfo "🖋 Building typst output."
+        gitrev <- fromJust <$> getEnv "GITREV"
         lst <- getDirectoryFiles "" templatesTypst
         need $ lst <> ["_build/book.md"]
         cmd_
@@ -149,6 +150,7 @@ main = shakeArgsWith shOpts flags $ \flags' newTargets -> pure $ Just $ do
            <> " --abbreviations=assets/abbrevs.txt"
            <> " --metadata-file=metadata.yaml"
            <> " --template=templates/typst/template1.typ"
+           <> " --metadata gitrev=" <> gitrev
 
     "_build/book.pdf" %> \out -> do
         putInfo "🖋 Building pdf output."
@@ -161,6 +163,7 @@ main = shakeArgsWith shOpts flags $ \flags' newTargets -> pure $ Just $ do
 
     "_build/book.html" %> \out -> do
         putInfo "🖋 Building html output."
+        gitrev <- fromJust <$> getEnv "GITREV"
         lst <- getDirectoryFiles "" templatesHtml
         need $ lst <>
             [ "_build/book.md"
@@ -173,10 +176,12 @@ main = shakeArgsWith shOpts flags $ \flags' newTargets -> pure $ Just $ do
            <> " --abbreviations=assets/abbrevs.txt"
            <> " --template=templates/html/template.html"
            <> " --css templates/html/style.css"
-           <> " -M document-css=false"
+           <> " --metadata document-css=false"
+           <> " --metadata-file=metadata.yaml"
            <> " --include-in-header templates/html/in-header.html"
            <> " --include-before-body templates/html/before-body.html"
            <> " --include-after-body templates/html/after-body.html"
+           <> " --metadata gitrev=" <> gitrev
 
   where
 

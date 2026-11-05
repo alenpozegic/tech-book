@@ -13,6 +13,14 @@
   }
 }
 
+#let page-header(title, version, gitrev) = context {
+  if page.numbering != none {
+    let position = if calc.odd(here().page()) { right } else { left }
+    align(position, [#title, Release #version (#gitrev)])
+    line(length: 100%, stroke: 0.5pt)
+  }
+}
+
 // Sode fizične strani: številka levo. Lihe: desno. Naslovnica brez številke.
 #let page-footer() = context {
   if page.numbering != none {
@@ -23,59 +31,56 @@
       fill: component-style.footer.color,
     )
 
-    let position = if calc.odd(here().page()) { 
-      right } else { 
-        left }
+    let position = if calc.odd(here().page()) { right } else { left }
 
+    line(length: 100%, stroke: 0.5pt)
     align(position, counter(page).display(page.numbering))
   }
 }
 
 // Naslovnica
-#let cover-page(title: none, publisher: none, date: none) = {
-  if title != none {
-    page(numbering: none)[
-      #line(length: 100%, stroke: component-style.cover.rule-stroke)
+#let cover-page(title, version, gitrev, publisher, date) = {
+  page(numbering: none)[
+    #line(length: 100%, stroke: component-style.cover.rule-stroke)
 
-      #v(12pt)
+    #v(12pt)
 
-      #align(right)[
-        #image(
-          component-style.cover.image,
-          width: component-style.cover.image-width,
-        )
-      ]
-
-      #v(1fr)
-
-      #align(center)[
-        #text(
-          size: component-style.cover.title-size,
-          weight: component-style.cover.title-weight,
-        )[#title]\
-        #text(
-        )[(placeholder)]
-      ]
-
-      #v(2.5fr)
-
-      #align(center)[
-        #text(
-          size:component-style.cover.details-size,
-          )[#publisher]
-
-      ]
-
-      #align(center)[
-        #text(
-          size: component-style.cover.details-size,
-          )[#date]
-      ]
-
-      #line(length: 100%, stroke: component-style.cover.rule-stroke)
-      #line(length: 100%, stroke: component-style.cover.thin-rule-stroke)
+    #align(right)[
+      #image(
+        component-style.cover.image,
+        width: component-style.cover.image-width,
+      )
     ]
-  }
+
+    #v(1fr)
+
+    #align(center)[
+      #text(
+        size: component-style.cover.title-size,
+        weight: component-style.cover.title-weight,
+      )[#title]\
+      #text(
+      )[Release #version (#gitrev)]
+    ]
+
+    #v(2.5fr)
+
+    #align(center)[
+      #text(
+        size:component-style.cover.details-size,
+        )[#publisher]
+
+    ]
+
+    #align(center)[
+      #text(
+        size: component-style.cover.details-size,
+        )[#date]
+    ]
+
+    #line(length: 100%, stroke: component-style.cover.rule-stroke)
+    #line(length: 100%, stroke: component-style.cover.thin-rule-stroke)
+  ]
 }
 
 // Skupni prikaz vnosa kazala.
@@ -123,7 +128,7 @@
 
 show outline.entry: set text(
   size: component-style.toc.entries-size,
-) 
+)
 
 show outline.entry: toc-entry
 
@@ -262,6 +267,8 @@ show outline.entry: toc-entry
 #let custom-conf(
   title: none,
   subtitle: none,
+  version: none,
+  gitrev: none,
   authors: (),
   keywords: (),
   date: none,
@@ -288,6 +295,7 @@ show outline.entry: toc-entry
     binding: component-style.page.binding,
     margin: margin,
     numbering: pagenumbering,
+    header: page-header(title, version, gitrev),
     footer: page-footer(),
     columns: cols,
   )
@@ -326,7 +334,7 @@ set heading(numbering: (..numbers) => {
     fill: component-style.links.color,
   )
 
-  cover-page(title: title, publisher: publisher, date: date)
+  cover-page(title, version, gitrev, publisher, date)
   main-toc()
   figures-toc()
   tables-toc()

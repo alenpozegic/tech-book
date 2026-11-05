@@ -46,6 +46,12 @@ $endif$
 $if(subtitle)$
   subtitle: [$subtitle$],
 $endif$
+$if(version)$
+  version: [$version$],
+$endif$
+$if(gitrev)$
+  gitrev: [$gitrev$],
+$endif$
 $if(author)$
   authors: (
 $for(author)$
