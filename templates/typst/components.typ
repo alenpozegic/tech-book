@@ -13,6 +13,7 @@
   }
 }
 
+
 #let thin-rule() = {
   line(
     length: component-style.thin-rule.length,
@@ -21,6 +22,16 @@
 }
 
 // Sode fizične strani: številka levo. Lihe: desno. Naslovnica brez številke. Tanka črta v nogi
+#let page-header(title, version, gitrev) = context {
+  if page.numbering != none {
+    let position = if calc.odd(here().page()) { right } else { left }
+    align(position, [#title, Release #version (#gitrev)])
+  }
+
+  thin-rule()
+}
+
+// Sode fizične strani: številka levo. Lihe: desno. Naslovnica brez številke.
 #let page-footer() = context {
   thin-rule()
   if page.numbering != none {
@@ -32,16 +43,14 @@
       fill: component-style.footer.color,
     )
 
-    let position = if calc.odd(here().page()) { 
-      right } else { 
-        left }
+    let position = if calc.odd(here().page()) { right } else { left }
 
     align(position, counter(page).display(page.numbering))
   }
 }
 
-// Naslovnica
-#let cover-page(title: none, publisher: none, date: none) = {
+// Naslovnica z verzijo in revizijo dokumenta.
+#let cover-page(title, version, gitrev, publisher, date) = {
   if title != none {
     page(numbering: none, header: none, footer: none)[
       #line(length: 100%, stroke: component-style.cover.rule-stroke)
@@ -67,18 +76,17 @@
           size: component-style.cover.placeholder-size,
           weight: component-style.cover.placeholder-weight,
           fill: component-style.cover.placeholder-color,
-        )[(placeholder)]
+        )[Release #version (#gitrev)]
       ]
 
       #v(component-style.cover.title-bottom-spacing)
 
       #align(component-style.cover.details-align)[
         #text(
-          size:component-style.cover.details-size,
+          size: component-style.cover.details-size,
           weight: component-style.cover.details-weight,
           fill: component-style.cover.details-color,
-          )[#publisher]
-
+        )[#publisher]
       ]
 
       #align(component-style.cover.details-align)[
@@ -86,7 +94,7 @@
           size: component-style.cover.details-size,
           weight: component-style.cover.details-weight,
           fill: component-style.cover.details-color,
-          )[#date]
+        )[#date]
       ]
 
       #line(length: 100%, stroke: component-style.cover.rule-stroke)
@@ -324,6 +332,8 @@
 #let custom-conf(
   title: none,
   subtitle: none,
+  version: none,
+  gitrev: none,
   authors: (),
   keywords: (),
   date: none,
@@ -349,9 +359,9 @@
     paper: paper,
     binding: component-style.page.binding,
     margin: margin,
-    header: thin-rule(),
     header-ascent: component-style.header.ascent,
     numbering: pagenumbering,
+    header: page-header(title, version, gitrev),
     footer: page-footer(),
     footer-descent: component-style.footer.descent,
     columns: cols,
@@ -392,7 +402,7 @@
     fill: component-style.links.color,
   )
 
-  cover-page(title: title, publisher: publisher, date: date)
+  cover-page(title, version, gitrev, publisher, date)
   main-toc()
   figures-toc()
   tables-toc()

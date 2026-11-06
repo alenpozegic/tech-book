@@ -1,5 +1,6 @@
 { sources ? import ./nix/sources.nix
 , pkgs ? import sources.nixpkgs {}
+, gitrev ? "devel"
 , inShell ? null
 }:
 
@@ -19,6 +20,19 @@ let
     ];
   };
 
+  envVars = ''
+    export GITREV="${gitrev}"
+    export FONTCONFIG_FILE="${fontsConf}"
+  '';
+
+  src = builtins.filterSource
+    (path: type:
+      (type != "directory" || baseNameOf path != ".git")
+      && (type != "directory" || baseNameOf path != ".jj")
+      && (type != "directory" || baseNameOf path != "_build")
+      && (type != "symlink" || baseNameOf path != "result"))
+    ./.;
+
   deps = with pkgs; [
     pandoc
     pandoc-include
@@ -34,12 +48,23 @@ let
     buildInputs = deps ++ [
     ];
     shellHook = ''
-      export FONTCONFIG_FILE="${fontsConf}"
+      ${envVars}
     '';
   };
 
-  # TODO
-  drv = pkgs.mkShell {
+  drv = pkgs.stdenv.mkDerivation {
+      name = "tech-book";
+      src = src;
+      nativeBuildInputs = deps ++ [
+      ];
+      buildPhase = ''
+        ${envVars}
+        shake
+      '';
+      installPhase = ''
+        mkdir -p "$out"
+        cp -a _build/* $out
+      '';
   };
 
 in if inShell == false
