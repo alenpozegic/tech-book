@@ -13,9 +13,18 @@
   }
 }
 
-// Sode fizične strani: številka levo. Lihe: desno. Naslovnica brez številke.
+#let thin-rule() = {
+  line(
+    length: component-style.thin-rule.length,
+    stroke: component-style.thin-rule.stroke,
+  )
+}
+
+// Sode fizične strani: številka levo. Lihe: desno. Naslovnica brez številke. Tanka črta v nogi
 #let page-footer() = context {
+  thin-rule()
   if page.numbering != none {
+    v(component-style.footer.rule-spacing)
 
     set text(
       size: component-style.footer.size,
@@ -34,46 +43,54 @@
 // Naslovnica
 #let cover-page(title: none, publisher: none, date: none) = {
   if title != none {
-    page(numbering: none)[
+    page(numbering: none, header: none, footer: none)[
       #line(length: 100%, stroke: component-style.cover.rule-stroke)
 
-      #v(12pt)
+      #v(component-style.cover.image-top-spacing)
 
-      #align(right)[
+      #align(component-style.cover.image-align)[
         #image(
           component-style.cover.image,
           width: component-style.cover.image-width,
         )
       ]
 
-      #v(1fr)
+      #v(component-style.cover.title-top-spacing)
 
-      #align(center)[
+      #align(component-style.cover.title-align)[
         #text(
           size: component-style.cover.title-size,
           weight: component-style.cover.title-weight,
+          fill: component-style.cover.title-color,
         )[#title]\
         #text(
+          size: component-style.cover.placeholder-size,
+          weight: component-style.cover.placeholder-weight,
+          fill: component-style.cover.placeholder-color,
         )[(placeholder)]
       ]
 
-      #v(2.5fr)
+      #v(component-style.cover.title-bottom-spacing)
 
-      #align(center)[
+      #align(component-style.cover.details-align)[
         #text(
           size:component-style.cover.details-size,
+          weight: component-style.cover.details-weight,
+          fill: component-style.cover.details-color,
           )[#publisher]
 
       ]
 
-      #align(center)[
+      #align(component-style.cover.details-align)[
         #text(
           size: component-style.cover.details-size,
+          weight: component-style.cover.details-weight,
+          fill: component-style.cover.details-color,
           )[#date]
       ]
 
       #line(length: 100%, stroke: component-style.cover.rule-stroke)
-      #line(length: 100%, stroke: component-style.cover.thin-rule-stroke)
+      #thin-rule()
     ]
   }
 }
@@ -88,9 +105,9 @@
 
   let inner = [
     #entry.body()
-    #h(0.5em)
+    #h(component-style.toc.filler-spacing)
     #box(width: 1fr, entry.fill)
-    #h(0.5em)
+    #h(component-style.toc.filler-spacing)
     #text(fill: component-style.toc.pages-color)[#entry.page()]
   ]
 
@@ -108,6 +125,8 @@
   )
 
   show heading: set text(
+    size: component-style.toc.title-size,
+    weight: component-style.toc.title-weight,
     fill: component-style.toc.title-color,
   )
 
@@ -121,11 +140,11 @@
     above: component-style.toc.chapter-spacing,
   )
 
-show outline.entry: set text(
-  size: component-style.toc.entries-size,
-) 
+  show outline.entry: set text(
+    size: component-style.toc.entries-size,
+  )
 
-show outline.entry: toc-entry
+  show outline.entry: toc-entry
 
   outline(
     title: component-style.toc.title,
@@ -146,6 +165,8 @@ show outline.entry: toc-entry
   )
 
   show heading: set text(
+    size: component-style.toc.title-size,
+    weight: component-style.toc.title-weight,
     fill: component-style.toc.title-color,
   )
 
@@ -173,6 +194,8 @@ show outline.entry: toc-entry
   )
 
   show heading: set text(
+    size: component-style.toc.title-size,
+    weight: component-style.toc.title-weight,
     fill: component-style.toc.title-color
   )
 
@@ -238,8 +261,47 @@ show outline.entry: toc-entry
   }
 }
 
-// Pravila veljajo samo za vsebino ki je za naslovnico in glavnim kazalom
+// Pravila veljajo samo za vsebino ki je za vsemi začetnimi kazali
 #let chapter-content(doc) = {
+  show heading.where(level: 1): set text(
+    size: component-style.heading.level1.size,
+    weight: component-style.heading.level1.weight,
+    fill: component-style.heading.level1.color,
+  )
+
+  show heading.where(level: 1): set block(
+    above: component-style.heading.level1.above,
+    below: component-style.heading.level1.below,
+  )
+
+  show heading.where(level: 2): set text(
+    size: component-style.heading.level2.size,
+    weight: component-style.heading.level2.weight,
+    fill: component-style.heading.level2.color,
+  )
+
+  show heading.where(level: 2): set block(
+    above: component-style.heading.level2.above,
+    below: component-style.heading.level2.below,
+  )
+
+  show heading: it => {
+    if it.level >= 3 {
+      set text(
+        size: component-style.heading.deeper.size,
+        weight: component-style.heading.deeper.weight,
+        fill: component-style.heading.deeper.color,
+      )
+      set block(
+        above: component-style.heading.deeper.above,
+        below: component-style.heading.deeper.below,
+      )
+      it
+    } else {
+      it
+    }
+  }
+
   show heading: chapter => {
     if chapter.level <= 2 {
       pagebreak(weak: true)
@@ -287,8 +349,11 @@ show outline.entry: toc-entry
     paper: paper,
     binding: component-style.page.binding,
     margin: margin,
+    header: thin-rule(),
+    header-ascent: component-style.header.ascent,
     numbering: pagenumbering,
     footer: page-footer(),
+    footer-descent: component-style.footer.descent,
     columns: cols,
   )
   set par(justify: component-style.paragraph.justify)
@@ -298,29 +363,30 @@ show outline.entry: toc-entry
     font: font,
     size: fontsize,
   )
-set heading(numbering: (..numbers) => {
-  let parts = numbers.pos()
+  set heading(numbering: (..numbers) => {
+    let parts = numbers.pos()
 
-  if parts.len() <= 2 {
-    // L1: 1, 2 …; L2: 1.1, 1.2 …
-    numbering(sectionnumbering, ..parts)
-  } else {
-    // Od L3 naprej uporabimo simbole
-    let symbols = component-style.heading.symbols
-    let index = calc.min(parts.len() - 3, symbols.len() -1)
+    if parts.len() <= 2 {
+      // L1: 1, 2 …; L2: 1.1, 1.2 …
+      numbering(sectionnumbering, ..parts)
+    } else {
+      // Od L3 naprej uporabimo simbole.
+      let symbols = component-style.heading.symbols
+      let index = calc.min(parts.len() - 3, symbols.len() - 1)
 
-    symbols.at(index)
-  }
-})
+      symbols.at(index)
+    }
+  })
 
   set table(
-  stroke: component-style.table.stroke,
-  fill: (_, y) => if y == 0 {
-    component-style.table.header-fill
-  } else {
-    component-style.table.body-fill
-  }
-)
+    stroke: component-style.table.stroke,
+    inset: component-style.table.inset,
+    fill: (_, y) => if y == 0 {
+      component-style.table.header-fill
+    } else {
+      component-style.table.body-fill
+    },
+  )
 
   show link: set text(
     fill: component-style.links.color,
